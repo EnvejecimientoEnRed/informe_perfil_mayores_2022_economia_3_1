@@ -26,12 +26,60 @@ export function initChart(iframe) {
 
         console.log(data);
 
-        function initViz() {
+        // sort data
+        data.sort(function(b, a) {
+            return a.jubilacion_pension_media - b.jubilacion_pension_media;
+        });
 
+        //Desarrollo del gráfico
+        let currentType = 'viz';
+
+        let margin = {top: 10, right: 10, bottom: 80, left: 30},
+            width = document.getElementById('viz').clientWidth - margin.left - margin.right,
+            height = document.getElementById('viz').clientHeight - margin.top - margin.bottom;
+
+        let svg = d3.select("#viz")
+            .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        // X axis
+        let x = d3.scaleBand()
+            .range([ 0, width ])
+            .domain(data.map(function(d) { return d.ccaa; }))
+            .padding(0.2);
+        svg.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x))
+            .selectAll("text")
+                .attr("transform", "translate(-10,0)rotate(-45)")
+                .style("text-anchor", "end");
+
+        // Add Y axis
+        var y = d3.scaleLinear()
+            .domain([0,1500])
+            .range([ height, 0]);
+        svg.append("g")
+            .call(d3.axisLeft(y));
+
+        function initViz() {
+            // Bars
+            svg.selectAll("bars")
+            .data(data)
+            .enter()
+            .append("rect")
+            .attr('class', 'prueba')
+            .attr("x", function(d) { return x(d.ccaa); })
+            .attr("y", function(d) { return y(d.jubilacion_pension_media); })
+            .attr("width", x.bandwidth())
+            .attr("height", function(d) { return height - y(d.jubilacion_pension_media); })
+            .attr("fill", "#69b3a2")
         }
 
         function animateChart() {
-            
+
         }
 
         ///// CAMBIO
