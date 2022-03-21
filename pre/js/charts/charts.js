@@ -24,17 +24,16 @@ export function initChart(iframe) {
     d3.csv('https://raw.githubusercontent.com/CarlosMunozDiazCSIC/informe_perfil_mayores_2022_economia_3_2/main/data/pension_media_jubilacion_ccaa.csv', function(error,data) {
         if (error) throw error;
 
-        console.log(data);
-
         // sort data
         data.sort(function(b, a) {
-            return a.jubilacion_pension_media - b.jubilacion_pension_media;
+            return +a.jubilacion_pension_media - +b.jubilacion_pension_media;
         });
+        console.log(data);
 
         //Desarrollo del gráfico
         let currentType = 'viz';
 
-        let margin = {top: 10, right: 10, bottom: 80, left: 30},
+        let margin = {top: 10, right: 10, bottom: 80, left: 50},
             width = document.getElementById('viz').clientWidth - margin.left - margin.right,
             height = document.getElementById('viz').clientHeight - margin.top - margin.bottom;
 
@@ -72,9 +71,9 @@ export function initChart(iframe) {
             .append("rect")
             .attr('class', 'prueba')
             .attr("x", function(d) { return x(d.ccaa); })
-            .attr("y", function(d) { return y(d.jubilacion_pension_media); })
+            .attr("y", function(d) { return y(+d.jubilacion_pension_media); })
             .attr("width", x.bandwidth())
-            .attr("height", function(d) { return height - y(d.jubilacion_pension_media); })
+            .attr("height", function(d) { return height - y(+d.jubilacion_pension_media); })
             .attr("fill", "#69b3a2")
         }
 
