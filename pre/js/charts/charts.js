@@ -33,7 +33,7 @@ export function initChart(iframe) {
         //Desarrollo del gráfico
         let currentType = 'viz';
 
-        let margin = {top: 10, right: 10, bottom: 80, left: 50},
+        let margin = {top: 10, right: 10, bottom: 105, left: 50},
             width = document.getElementById('viz').clientWidth - margin.left - margin.right,
             height = document.getElementById('viz').clientHeight - margin.top - margin.bottom;
 
@@ -48,17 +48,18 @@ export function initChart(iframe) {
         let x = d3.scaleBand()
             .range([ 0, width ])
             .domain(data.map(function(d) { return d.ccaa; }))
-            .padding(0.2);
+            .padding(0.25);
+
         svg.append("g")
             .attr("transform", "translate(0," + height + ")")
             .call(d3.axisBottom(x))
             .selectAll("text")
-                .attr("transform", "translate(-10,0)rotate(-45)")
+                .attr("transform", "translate(-5,0)rotate(-45)")
                 .style("text-anchor", "end");
 
         // Add Y axis
         var y = d3.scaleLinear()
-            .domain([0,1500])
+            .domain([0,1600])
             .range([ height, 0]);
         svg.append("g")
             .call(d3.axisLeft(y));
@@ -66,19 +67,44 @@ export function initChart(iframe) {
         function initViz() {
             // Bars
             svg.selectAll("bars")
-            .data(data)
-            .enter()
-            .append("rect")
-            .attr('class', 'prueba')
-            .attr("x", function(d) { return x(d.ccaa); })
-            .attr("y", function(d) { return y(+d.jubilacion_pension_media); })
-            .attr("width", x.bandwidth())
-            .attr("height", function(d) { return height - y(+d.jubilacion_pension_media); })
-            .attr("fill", "#69b3a2")
+                .data(data)
+                .enter()
+                .append("rect")
+                .attr('class', 'prueba')
+                .attr("fill", function(d) {
+                    if (d.ccaa == 'ESPAÑA') {
+                        return COLOR_ANAG_2;
+                    } else {
+                        return COLOR_PRIMARY_1;
+                    }
+                })
+                .attr("x", function(d) { return x(d.ccaa); })
+                .attr("width", x.bandwidth())
+                .attr("y", function(d) { return y(0); })            
+                .attr("height", function(d) { return 0; })
+                .transition()
+                .duration(2000)            
+                .attr("y", function(d) { return y(+d.jubilacion_pension_media); })            
+                .attr("height", function(d) { return height - y(+d.jubilacion_pension_media); });            
         }
 
         function animateChart() {
-
+            svg.selectAll(".prueba")
+            .attr("fill", function(d) {
+                if (d.ccaa == 'ESPAÑA') {
+                    return COLOR_ANAG_2;
+                } else {
+                    return COLOR_PRIMARY_1;
+                }
+            })
+            .attr("x", function(d) { return x(d.ccaa); })
+            .attr("width", x.bandwidth())
+            .attr("y", function(d) { return y(0); })            
+            .attr("height", function(d) { return 0; })
+            .transition()
+            .duration(2000)            
+            .attr("y", function(d) { return y(+d.jubilacion_pension_media); })            
+            .attr("height", function(d) { return height - y(+d.jubilacion_pension_media); });        
         }
 
         ///// CAMBIO
