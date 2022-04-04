@@ -28,7 +28,6 @@ export function initChart(iframe) {
         data.sort(function(b, a) {
             return +a.jubilacion_pension_media - +b.jubilacion_pension_media;
         });
-        console.log(data);
 
         //Desarrollo del gráfico
         let currentType = 'viz';
