@@ -5,11 +5,19 @@
     box-sizing: border-box;
 }
 
-body, button {
+body {
     font-family: 'Montserrat', sans-serif;
 
     //Tamaño de elementos para utilizar EMs posteriormente
     font-size: 16px;
+    line-height: 1.25em;
+}
+
+button {
+    font-family: 'Montserrat', sans-serif;
+
+    //Tamaño de elementos para utilizar EMs posteriormente
+    font-size: 0.85em;
     line-height: 1.25em;
 }
 
@@ -121,7 +129,7 @@ body, button {
 
         //Visualización
         &__double {
-            margin-top: 12px;
+            margin-top: 8px;
 
             //Visualización
             .chart__viz {
@@ -214,8 +222,8 @@ body, button {
         top: 0px;
         right: 0px;
 
-        width: 76px;
-        height: 46px;
+        width: 95px;
+        height: 65px;
     }
 }
 
@@ -226,9 +234,8 @@ body, button {
 //Elementos genéricos en contenedores
 .b-title {
     width: 100%;
-    max-width: calc(100% - 90px);
-    min-height: 46px;
-    margin-bottom: 8px;
+    max-width: calc(100% - 100px);
+    min-height: 65px;
 
     .title {
         font-size: 1em;
@@ -438,27 +445,7 @@ body, button {
         }
     }
 
-    .b-title {
-        width: 100%;
-        max-width: none;
-    
-        .title {
-            max-width: calc(100% - 90px);
-        }
-        
-        .subtitle {
-            //El ancho dependerá de la longitud del título > Para que no se pegue con el logo
-            max-width: calc(100% - 90px);
-        }
-    }
-
     .b-rrss {
         width: 80%;
-    }
-}
-
-@media screen and (max-width: 475px) {
-    body {
-        font-size: 14.5px;
     }
 }
