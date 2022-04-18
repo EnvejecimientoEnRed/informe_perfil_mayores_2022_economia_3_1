@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 //import { numberWithCommas2 } from './helpers';
 //import { getInTooltip, getOutTooltip, positionTooltip } from './modules/tooltip';
 import { setChartHeight } from '../modules/height';
-import { setChartCanvas, setChartCanvasImage, setCustomCanvas, setChartCustomCanvasImage } from '../modules/canvas-image';
+import { setChartCanvas, setChartCanvasImage } from '../modules/canvas-image';
 import { setRRSSLinks } from '../modules/rrss';
 import { setFixedIframeUrl } from './chart_helpers';
 
@@ -165,13 +165,11 @@ export function initChart(iframe) {
 
         //Captura de pantalla de la visualización
         setChartCanvas();
-        setCustomCanvas();
 
         let pngDownload = document.getElementById('pngImage');
 
         pngDownload.addEventListener('click', function(){
             setChartCanvasImage('importe_mensual_pensiones');
-            setChartCustomCanvasImage('importe_mensual_pensiones');
         });
 
         //Altura del frame

@@ -139,9 +139,14 @@ body, button {
                 
                     color: #A3A3A3;
                 }
+
+                .domain {
+                    stroke: #262626;
+                    stroke-width: 1px;
+                }
                 
                 & .tick line {
-                    stroke: #F0F0F0;
+                    stroke: #262626;
                     stroke-width: 0.5px;
                 }
                 
