@@ -25,7 +25,7 @@ export function initChart(iframe) {
         //Desarrollo del gráfico
         let currentType = 'viz';
 
-        let margin = {top: 10, right: 10, bottom: 105, left: 50},
+        let margin = {top: 5, right: 10, bottom: 75, left: 40},
             width = document.getElementById('chart').clientWidth - margin.left - margin.right,
             height = document.getElementById('chart').clientHeight - margin.top - margin.bottom;
 
@@ -40,7 +40,7 @@ export function initChart(iframe) {
         let x = d3.scaleBand()
             .range([ 0, width ])
             .domain(data.map(function(d) { return d.ccaa; }))
-            .padding(0.25);
+            .padding(0.45);
 
         let xAxis = function(g) {
             g.call(d3.axisBottom(x).tickValues(x.domain().filter(function(d,i){ 
@@ -91,14 +91,14 @@ export function initChart(iframe) {
             .call(yAxis);
 
         function initViz() {
-            // Bars
+            // Barras
             svg.selectAll("bars")
                 .data(data)
                 .enter()
                 .append("rect")
-                .attr('class', 'prueba')
+                .attr('class', 'rect')
                 .attr("fill", function(d) {
-                    if (d.ccaa == 'ESPAÑA') {
+                    if (d.ccaa == 'España') {
                         return COLOR_ANAG_PRIM_3;
                     } else {
                         return COLOR_PRIMARY_1;
@@ -108,6 +108,40 @@ export function initChart(iframe) {
                 .attr("width", x.bandwidth())
                 .attr("y", function(d) { return y(0); })            
                 .attr("height", function(d) { return 0; })
+                .on('mouseover', function(d,i,e) {
+                    //Opacidad de las barras
+                    let bars = svg.selectAll('.rect');  
+                    bars.each(function() {
+                        this.style.opacity = '0.4';
+                    });
+                    this.style.opacity = '1';
+
+                    //Texto
+                    let html = '';
+                    if(d.ccaa == 'España') {
+                        html = '<p class="chart__tooltip--title">' + d.ccaa + '</p>' + 
+                        '<p class="chart__tooltip--text">La pensión media de jubilación en España es de <b>' + numberWithCommas3(parseFloat(d.jubilacion_pension_media).toFixed(1)) + ' euros</b></p>';
+                    } else {
+                        html = '<p class="chart__tooltip--title">' + d.ccaa + '</p>' + 
+                        '<p class="chart__tooltip--text">La pensión media de jubilación en esta comunidad es de <b>' + numberWithCommas3(parseFloat(d.jubilacion_pension_media).toFixed(1)) + ' euros</b></p>';
+                    }                    
+            
+                    tooltip.html(html);
+
+                    //Tooltip
+                    positionTooltip(window.event, tooltip);
+                    getInTooltip(tooltip);
+                })
+                .on('mouseout', function(d,i,e) {
+                    //Quitamos los estilos de la línea
+                    let bars = svg.selectAll('.rect');
+                    bars.each(function() {
+                        this.style.opacity = '1';
+                    });
+                
+                    //Quitamos el tooltip
+                    getOutTooltip(tooltip);
+                })
                 .transition()
                 .duration(2000)            
                 .attr("y", function(d) { return y(+d.jubilacion_pension_media); })            
@@ -115,14 +149,7 @@ export function initChart(iframe) {
         }
 
         function animateChart() {
-            svg.selectAll(".prueba")
-            .attr("fill", function(d) {
-                if (d.ccaa == 'ESPAÑA') {
-                    return COLOR_ANAG_2;
-                } else {
-                    return COLOR_PRIMARY_1;
-                }
-            })
+            svg.selectAll(".rect")
             .attr("x", function(d) { return x(d.ccaa); })
             .attr("width", x.bandwidth())
             .attr("y", function(d) { return y(0); })            
