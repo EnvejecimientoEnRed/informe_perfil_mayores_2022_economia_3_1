@@ -1,23 +1,16 @@
 //Desarrollo de las visualizaciones
 import * as d3 from 'd3';
-//import { numberWithCommas2 } from './helpers';
-//import { getInTooltip, getOutTooltip, positionTooltip } from './modules/tooltip';
+import { numberWithCommas3 } from '../helpers';
+import { getInTooltip, getOutTooltip, positionTooltip } from '../modules/tooltip';
 import { setChartHeight } from '../modules/height';
 import { setChartCanvas, setChartCanvasImage } from '../modules/canvas-image';
 import { setRRSSLinks } from '../modules/rrss';
 import { setFixedIframeUrl } from './chart_helpers';
 
 //Colores fijos
-const COLOR_PRIMARY_1 = '#F8B05C', 
-COLOR_PRIMARY_2 = '#E37A42',
-COLOR_COMP_1 = '#528FAD', 
-COLOR_COMP_2 = '#AADCE0',
-COLOR_GREY_1 = '#D6D6D6', 
-COLOR_GREY_2 = '#A3A3A3',
-COLOR_ANAG__PRIM_1 = '#BA9D5F', 
-COLOR_ANAG_PRIM_2 = '#9E6C51',
-COLOR_ANAG_PRIM_3 = '#9E3515',
-COLOR_ANAG_COMP_1 = '#1C5A5E';
+const COLOR_PRIMARY_1 = '#F8B05C',
+COLOR_ANAG_PRIM_3 = '#9E3515';
+let tooltip = d3.select('#tooltip');
 
 export function initChart(iframe) {
     //Lectura de datos
@@ -33,10 +26,10 @@ export function initChart(iframe) {
         let currentType = 'viz';
 
         let margin = {top: 10, right: 10, bottom: 105, left: 50},
-            width = document.getElementById('viz').clientWidth - margin.left - margin.right,
-            height = document.getElementById('viz').clientHeight - margin.top - margin.bottom;
+            width = document.getElementById('chart').clientWidth - margin.left - margin.right,
+            height = document.getElementById('chart').clientHeight - margin.top - margin.bottom;
 
-        let svg = d3.select("#viz")
+        let svg = d3.select("#chart")
             .append("svg")
                 .attr("width", width + margin.left + margin.right)
                 .attr("height", height + margin.top + margin.bottom)
@@ -49,19 +42,53 @@ export function initChart(iframe) {
             .domain(data.map(function(d) { return d.ccaa; }))
             .padding(0.25);
 
+        let xAxis = function(g) {
+            g.call(d3.axisBottom(x).tickValues(x.domain().filter(function(d,i){ 
+                if(document.body.clientWidth < 560) {
+                    if(i % 2 == 0) {
+                        return d;
+                    }
+                } else {
+                    return d;
+                }
+            })));
+            g.call(function(g) {
+                g.selectAll("text")
+                    .attr("transform", "translate(-5,0)rotate(-45)")
+                    .style("text-anchor", "end");
+            })
+            g.call(function(g){g.selectAll('.tick line').remove()});
+            g.call(function(g){g.select('.domain').remove()});
+        }
+
         svg.append("g")
             .attr("transform", "translate(0," + height + ")")
-            .call(d3.axisBottom(x))
-            .selectAll("text")
-                .attr("transform", "translate(-5,0)rotate(-45)")
-                .style("text-anchor", "end");
+            .call(xAxis);
 
         // Add Y axis
-        var y = d3.scaleLinear()
+        let y = d3.scaleLinear()
             .domain([0,1600])
             .range([ height, 0]);
+        
+        let yAxis = function(svg) {
+            svg.call(d3.axisLeft(y).ticks(4).tickFormat(function(d,i) { return numberWithCommas3(d); }));
+            svg.call(function(g) {
+                g.call(function(g){
+                    g.selectAll('.tick line')
+                        .attr('class', function(d,i) {
+                            if (d == 0) {
+                                return 'line-special';
+                            }
+                        })
+                        .attr('x1', '0%')
+                        .attr('x2', `${width}`)
+                });
+            });
+        }
+
         svg.append("g")
-            .call(d3.axisLeft(y));
+            .attr("class", "yaxis")
+            .call(yAxis);
 
         function initViz() {
             // Bars
@@ -72,7 +99,7 @@ export function initChart(iframe) {
                 .attr('class', 'prueba')
                 .attr("fill", function(d) {
                     if (d.ccaa == 'ESPAÑA') {
-                        return COLOR_ANAG_2;
+                        return COLOR_ANAG_PRIM_3;
                     } else {
                         return COLOR_PRIMARY_1;
                     }
