@@ -91,8 +91,7 @@ button {
         //Debajo de todos los elementos lógicos tendremos la leyenda > Puede haber de 1 a 7 elementos dentro de la leyenda
         &__legend {
             display: flex;
-            flex-wrap: wrap;
-            
+            flex-wrap: wrap;            
 
             &--item {
                 position: relative;
@@ -277,10 +276,14 @@ button {
         min-height: 32px;
 
         border: 1.2px solid;
-        background-color: #fcfcfc;      
+        color: #262626;
+        background-color: #c0e1e2;       
+        &:hover { background-color: #cacbcd; }
 
         &.active {
-            background-color: #fff;
+            background-color: #1b1c1d;
+            color: #fff;
+            &:hover { background-color: #27292a; }   
         }
     }
 
