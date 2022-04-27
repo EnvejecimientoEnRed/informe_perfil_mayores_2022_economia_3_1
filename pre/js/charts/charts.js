@@ -12,7 +12,7 @@ const COLOR_PRIMARY_1 = '#F8B05C',
 COLOR_ANAG_PRIM_3 = '#9E3515';
 let tooltip = d3.select('#tooltip');
 
-export function initChart(iframe) {
+export function initChart() {
     //Lectura de datos
     d3.csv('https://raw.githubusercontent.com/CarlosMunozDiazCSIC/informe_perfil_mayores_2022_economia_3_1/main/data/pension_media_jubilacion_ccaa.csv', function(error,data) {
         if (error) throw error;
@@ -205,6 +205,10 @@ export function initChart(iframe) {
         //Animación del gráfico
         document.getElementById('replay').addEventListener('click', function() {
             animateChart();
+
+            setTimeout(() => {
+                setChartCanvas();
+            }, 4000);
         });
 
         //////
@@ -218,7 +222,9 @@ export function initChart(iframe) {
         setRRSSLinks('importe_mensual_pensiones');
 
         //Captura de pantalla de la visualización
-        setChartCanvas();
+        setTimeout(() => {
+            setChartCanvas();
+        }, 4000);
 
         let pngDownload = document.getElementById('pngImage');
 
@@ -227,6 +233,6 @@ export function initChart(iframe) {
         });
 
         //Altura del frame
-        setChartHeight(iframe);        
+        setChartHeight();        
     });    
 }
