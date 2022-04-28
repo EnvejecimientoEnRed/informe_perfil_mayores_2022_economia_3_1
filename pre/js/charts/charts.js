@@ -25,7 +25,7 @@ export function initChart() {
         //Desarrollo del gráfico
         let currentType = 'viz';
 
-        let margin = {top: 5, right: 10, bottom: 75, left: 40},
+        let margin = {top: 12.5, right: 10, bottom: 75, left: 40},
             width = document.getElementById('chart').clientWidth - margin.left - margin.right,
             height = document.getElementById('chart').clientHeight - margin.top - margin.bottom;
 
@@ -120,10 +120,10 @@ export function initChart() {
                     let html = '';
                     if(d.ccaa == 'España') {
                         html = '<p class="chart__tooltip--title">' + d.ccaa + '</p>' + 
-                        '<p class="chart__tooltip--text">La pensión media de jubilación en España es de <b>' + numberWithCommas3(parseFloat(d.jubilacion_pension_media).toFixed(1)) + ' euros</b></p>';
+                        '<p class="chart__tooltip--text">La pensión media de jubilación en España es de <b>' + numberWithCommas3(parseFloat(d.jubilacion_pension_media).toFixed(1)) + '</b> euros</p>';
                     } else {
                         html = '<p class="chart__tooltip--title">' + d.ccaa + '</p>' + 
-                        '<p class="chart__tooltip--text">La pensión media de jubilación en esta comunidad es de <b>' + numberWithCommas3(parseFloat(d.jubilacion_pension_media).toFixed(1)) + ' euros</b></p>';
+                        '<p class="chart__tooltip--text">La pensión media de jubilación en esta comunidad es de <b>' + numberWithCommas3(parseFloat(d.jubilacion_pension_media).toFixed(1)) + '</b> euros</p>';
                     }                    
             
                     tooltip.html(html);
