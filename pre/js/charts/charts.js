@@ -14,7 +14,7 @@ let tooltip = d3.select('#tooltip');
 
 export function initChart() {
     //Lectura de datos
-    d3.csv('https://raw.githubusercontent.com/CarlosMunozDiazCSIC/informe_perfil_mayores_2022_economia_3_1/main/data/pension_media_jubilacion_ccaa.csv', function(error,data) {
+    d3.csv('https://raw.githubusercontent.com/EnvejecimientoEnRed/informe_perfil_mayores_2022_economia_3_1/main/data/pension_media_jubilacion_ccaa.csv', function(error,data) {
         if (error) throw error;
 
         // sort data
